@@ -13,7 +13,7 @@ const requestListener = (req, response) => {
 
     fs.readFile("notes.json", (error, content) => {
       if (error) {
-        console.error(error);
+        throw error;
       }
 
       const notes = JSON.parse(content);
@@ -75,6 +75,15 @@ const requestListener = (req, response) => {
         });
       });
       response.end();
+    });
+  } else if (req.url === "/archivo" && req.method === "GET") {
+    fs.readFile("public/archivo.html", (error, content) => {
+      if (error) {
+        throw error;
+      }
+
+      response.writeHead(200, { "Content-Type": "text/html" });
+      response.end(content);
     });
   } else {
     response.writeHead(200, { "Content-Type": "text/plain" });
